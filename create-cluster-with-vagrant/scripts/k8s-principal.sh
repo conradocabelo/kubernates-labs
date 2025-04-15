@@ -38,3 +38,6 @@ su - vagrant -c "kubectl apply -f https://raw.githubusercontent.com/coreos/flann
 # Salvar join command
 kubeadm token create --print-join-command > /vagrant/scripts/join.sh
 chmod +x /vagrant/scripts/join.sh
+
+#Libera a pora no final
+sudo ufw allow 6443/tcp
