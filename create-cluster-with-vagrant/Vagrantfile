@@ -1,0 +1,20 @@
+Vagrant.configure("2") do |config|  
+    nodes = [
+        { hostname: "k8s-principal", ip: "192.168.56.10", script: "k8s-principal.sh" },
+        { hostname: "k8s-node-01", ip: "192.168.56.11", script: "k8s-node.sh" },
+        { hostname: "k8s-node-02", ip: "192.168.56.12", script: "k8s-node.sh" }
+    ]
+
+    nodes.each do |node|
+        config.vm.define node[:hostname] do |machine|
+            machine.vm.box = "ubuntu/jammy64"
+            machine.vm.hostname = node[:hostname]
+            machine.vm.network "private_network", ip: node[:ip]            
+            machine.vm.provider "virtualbox" do |vb|
+                vb.memory = 2048
+                vb.cpus = 2
+            end
+            machine.vm.provision "shell", path: "scripts/#{node[:script]}", privileged: true
+        end
+    end
+end    
